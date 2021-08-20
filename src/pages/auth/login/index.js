@@ -1,32 +1,28 @@
 
 import { formatMessage } from 'umi-plugin-locale';
 import { Form, Input, Button, Checkbox, Modal} from 'antd';
+import "./styles.css";
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'umi';
 import { connect } from 'dva';
 
 
 function Login({dispath, ...props}) {
 
-
   const onFinish = (values) => {
-
-    const {username, password} = values;
+    const {email, password} = values;
 
     props.dispatch({
       type: 'auth/login',
-      payload: {username, password},
+      payload: {email, password},
     });
-
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
 
   const openModal = () => {
       let secondsToGo = 5;
       const modal = Modal.error({
-        title: 'This is a notification message',
+        title: formatMessage({id: 'login.modal.errTitle'}),
         content: props.authError,
       });
       const timer = setInterval(() => {
@@ -45,71 +41,60 @@ function Login({dispath, ...props}) {
 
             {formatMessage({ id: 'login.title' })}
             <Form
-                  name="basic"
-                  labelCol={{
-                    span: 8,
-                  }}
-                  wrapperCol={{
-                    span: 16,
-                  }}
-                  initialValues={{
-                    remember: true,
-                  }}
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
-                >
-                    <Form.Item
-                      label="Username"
-                      name="username"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your username!',
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
+                name="normal_login"
+                className="login-form"
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={onFinish}
+              >
 
-                    <Form.Item
-                      label="Password"
-                      name="password"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your password!',
-                        },
-                      ]}
-                    >
-                      <Input.Password />
-                    </Form.Item>
+              <Form.Item
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'login.email.message'}),
+                  },
+                ]}
+              >
+                  <Input 
+                    prefix={<UserOutlined className="site-form-item-icon" />} 
+                    placeholder="Email" />
+              </Form.Item>
 
-                    <Form.Item
-                      name="remember"
-                      valuePropName="checked"
-                      wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                      }}
-                    >
-                      <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-
-                  <Form.Item
-                    wrapperCol={{
-                      offset: 8,
-                      span: 16,
-                    }}
-                  >
-                    <Button type="primary" htmlType="submit">
-                      {formatMessage({ id: 'login.submit' })}
-                    </Button>
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Link to="/auth/signup">{formatMessage({ id: 'login.goToRegister' })}</Link>
+            <Form.Item
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your Password!',
+                  },
+                ]}
+            >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder= {formatMessage({ id: 'login.password.placeholder'})}/>
+            </Form.Item>
+     
+            <Form.Item>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                  <Checkbox>{formatMessage({id: 'login.rememberMe'})}</Checkbox>
                 </Form.Item>
-          </Form>  
+
+                <a className="login-form-forgot" href="">
+                  {formatMessage({ id: 'login.forgetPassword'})}
+                </a>
+            </Form.Item>
+
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  {formatMessage({ id: 'login.submit' })}
+                </Button>
+                <Link to="/auth/signup">{formatMessage({ id: 'login.goToRegister' })}</Link>
+            </Form.Item>
+        </Form>
           
     </div>
     
