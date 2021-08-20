@@ -1,21 +1,20 @@
 
 import { formatMessage } from 'umi-plugin-locale';
 import { Form, Input, Button, Checkbox } from 'antd';
-import firebase from '../../../../firebaseConfig';
-import { history } from 'umi';
+import { connect } from 'dva';
 
 
-export default function() {
+function Signup ({dispatch, ...props}) {
   
-  
-
-
   const onFinish = async (values) => {
     console.log('Success:', values);
 
-    firebase.auth().createUserWithEmailAndPassword(values.username, values.password)
-      .then(()=> history.push("/user"))
-      .catch(err=>alert(err))
+    const {username, password} = values;
+
+    props.dispatch({
+      type: 'auth/signup',
+      payload: {username, password},
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -93,4 +92,14 @@ export default function() {
 }
 
 
+function mapStateToProps(state) {
+  const { email, password, isLogged } = state.auth;
+  return {
+    //loading: state.loading.models.auth,
+    email,
+    password,
+    isLogged
+  };
+}
 
+export default connect(mapStateToProps)(Signup);

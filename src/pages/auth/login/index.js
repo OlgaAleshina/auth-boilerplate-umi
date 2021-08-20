@@ -1,22 +1,48 @@
 
 import { formatMessage } from 'umi-plugin-locale';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Modal} from 'antd';
 import { Link } from 'umi';
+import { connect } from 'dva';
 
 
-export default function() {
+function Login({dispath, ...props}) {
+
 
   const onFinish = (values) => {
-    console.log('Success:', values);
+
+    const {username, password} = values;
+
+    props.dispatch({
+      type: 'auth/login',
+      payload: {username, password},
+    });
+
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
+  const openModal = () => {
+      let secondsToGo = 5;
+      const modal = Modal.error({
+        title: 'This is a notification message',
+        content: props.authError,
+      });
+      const timer = setInterval(() => {
+        secondsToGo -= 1;
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(timer);
+        modal.destroy();
+      }, secondsToGo * 1000)
+    }
+
   return (
     <div >
-     
+            {props.authError &&  openModal()}
+
             {formatMessage({ id: 'login.title' })}
             <Form
                   name="basic"
@@ -76,12 +102,12 @@ export default function() {
                     }}
                   >
                     <Button type="primary" htmlType="submit">
-                      Submit
+                      {formatMessage({ id: 'login.submit' })}
                     </Button>
                   </Form.Item>
 
                   <Form.Item>
-                    <Link to="/auth/signup">register</Link>
+                    <Link to="/auth/signup">{formatMessage({ id: 'login.goToRegister' })}</Link>
                 </Form.Item>
           </Form>  
           
@@ -90,5 +116,17 @@ export default function() {
   );
 }
 
+function mapStateToProps(state) {
+  const { email, password, isLogged, authError } = state.auth;
+  return {
+    //loading: state.loading.models.users,
+    email,
+    password,
+    isLogged, 
+    authError,
+  };
+}
+
+export default connect(mapStateToProps)(Login);
 
 
