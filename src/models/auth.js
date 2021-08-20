@@ -1,4 +1,5 @@
 import * as authService from '../services/auth';
+import { router } from 'umi';
 
 
 export default {
@@ -21,15 +22,18 @@ export default {
       },
 
     effects: {
-        *login( {payload}, { call, put }, history) {
-           // console.log(history)
+        *login( {payload}, { call, put }) {
+           
            try {
-                yield call(authService.login, payload.username, payload.password);
+                yield call(authService.login, payload.email, payload.password);
 
                 yield put({
                     type: 'log',
                     payload: true
                 });
+
+                yield router.push("/user")
+
             } catch(error) {
                 yield put({
                     type: 'authError',
@@ -39,12 +43,24 @@ export default {
         },
 
         *signup( {payload} , { call, put }) {
-            
-            yield call(authService.signup, payload.username, payload.password);
-            yield put({
-              type: 'log',
-              payload: true
-            });
+
+            try {
+                yield call(authService.signup, payload.emil, payload.password);
+                
+                yield put({
+                type: 'log',
+                payload: true
+                });
+                
+                yield router.push("/user")
+
+            } catch(error) {
+                
+                yield put({
+                    type: 'authError',
+                    payload: error.message
+                })
+            }
           },
     }
 }

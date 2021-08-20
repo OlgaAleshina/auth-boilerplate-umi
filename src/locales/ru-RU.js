@@ -11,4 +11,11 @@ export default {
     "login.forgetPassword": "Забыли пароль?",
     "login.modal.errTitle": "При авторизации произошла ошибка",
     "signup.title": "Зарегистрироваться",
+    "signup.submit": "Зарегистрироваться",
+    "signup.email.message": "Пожалуйста введите e-mail",
+    "signup.password.placeholder": "Пароль",
+    "signup.password.message": "Пожалуйста введите пароль",
+    "signup.goToLogin": "Войти",
+    "signup.rememberMe": "Запомнить меня",
+    "signup.modal.errTitle": "При авторизации произошла ошибка",
 }

@@ -68,7 +68,7 @@ function Login({dispath, ...props}) {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your Password!',
+                    message: formatMessage({ id: 'login.password.message'}),
                   },
                 ]}
             >
