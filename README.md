@@ -37,7 +37,9 @@ yarn start
     ├── pages
         ├── index.less
         └── index.js
+    ├── firebaseConfig.js
     └── app.js
+ 
 
 
 ## Available scripts
@@ -53,3 +55,4 @@ yarn start
 - [dva]
 - [react-router]
 - [redux-saga]
+- [firebase] for authentification
