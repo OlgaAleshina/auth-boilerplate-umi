@@ -12,11 +12,11 @@ function Signup ({dispatch, ...props}) {
   const onFinish = async (values) => {
     console.log('Success:', values);
 
-    const {email, password} = values;
+    const {email, password, remember} = values;
 
     props.dispatch({
       type: 'auth/signup',
-      payload: {email, password},
+      payload: {email, password, remember},
     });
   };
 

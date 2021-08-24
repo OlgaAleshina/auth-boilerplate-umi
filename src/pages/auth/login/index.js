@@ -10,11 +10,12 @@ import { connect } from 'dva';
 function Login({dispath, ...props}) {
 
   const onFinish = (values) => {
-    const {email, password} = values;
+    console.log(values)
+    const {email, password, remember} = values;
 
     props.dispatch({
       type: 'auth/login',
-      payload: {email, password},
+      payload: {email, password, remember},
     });
   };
 

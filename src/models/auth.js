@@ -1,6 +1,6 @@
 import * as authService from '../services/auth';
 import { router } from 'umi';
-
+import { setCookies, getCookies } from '../utils/handlingCookies';
 
 export default {
     namespace: 'auth',
@@ -31,6 +31,8 @@ export default {
                     type: 'log',
                     payload: true
                 });
+                
+                yield setCookies('isLogged', true, (payload.remember && 100))
 
                 yield router.push("/user")
 
@@ -52,6 +54,8 @@ export default {
                 payload: true
                 });
                 
+                yield setCookies('isLogged', true, (payload.remember && 100))
+
                 yield router.push("/user")
 
             } catch(error) {
@@ -62,5 +66,19 @@ export default {
                 })
             }
           },
-    }
+    },
+
+    subscriptions: {
+        checkLogin({ history }) {
+            
+            return history.listen((state) => {
+                if(getCookies("isLogged") || state.isLogged) {
+                    return 
+                } else {
+                    router.push("/auth/login")
+                }
+          });
+        },
+
+      },
 }

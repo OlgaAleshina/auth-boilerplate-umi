@@ -1,5 +1,4 @@
 import styles from './styles.css';
-import { Redirect } from 'umi';
 
 
 function BasicLayout(props) {
@@ -9,6 +8,7 @@ function BasicLayout(props) {
     return  props.children 
   }
 
+
   return (
       <div className={styles.normal}>
           <h1 className={styles.title}>Yay! I am basic layuot</h1>
@@ -16,19 +16,6 @@ function BasicLayout(props) {
       </div>
   );
   
-  //const { isLogin } = useAuth();
-  const isLogin = true;
-  
-  if (isLogin) {
-    return (
-      <div className={styles.normal}>
-      <h1 className={styles.title}>Yay! I am basic layuot</h1>
-      {props.children}
-    </div>
-    )
-  } else {
-    return <Redirect to="/login" />;
-  }
 }
 
-export default BasicLayout;
+export default BasicLayout
